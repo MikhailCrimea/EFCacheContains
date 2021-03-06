@@ -61,7 +61,17 @@ namespace berkeleychurchill.CacheContains
 
                 case ExpressionType.MemberAccess:
                     var memberExpr = (MemberExpression)e;
-                    var valueForInvocation = EvaluateExpression(memberExpr.Expression);
+
+                    object valueForInvocation;
+                    if (memberExpr.Expression != null)
+                    {
+                        valueForInvocation = EvaluateExpression(memberExpr.Expression);
+                    }
+                    else
+                    {
+                        valueForInvocation = memberExpr.Member;
+                    }
+                    
                     if (memberExpr.Member.MemberType == MemberTypes.Property)
                     {
                         var propertyInfo = (PropertyInfo)memberExpr.Member;

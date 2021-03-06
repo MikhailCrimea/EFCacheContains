@@ -135,5 +135,22 @@ namespace berkeleychurchill.CacheContains.Test
             Assert.AreEqual(0, CacheContainsStatistics.RewriteCount);
 #endif
         }
+
+        [Test]
+        public void TestCollectionIsTakenFromClassMember()
+        {
+            List<int> values = storeList.AsQueryable().CacheContains().Where(l => SomeCollection.CollectionIds.Contains(l)).ToList();
+            
+            Assert.That(values.Count, Is.EqualTo(SomeCollection.CollectionIds.Count));
+            for (var i = 0; i < SomeCollection.CollectionIds.Count; i++)
+            {
+                Assert.That(values[i], Is.EqualTo(SomeCollection.CollectionIds[i]));
+            }
+        }
+
+        class SomeCollection
+        {
+            public static List<int> CollectionIds = new List<int> { 3, 5, 7 };
+        }
     }
 }
